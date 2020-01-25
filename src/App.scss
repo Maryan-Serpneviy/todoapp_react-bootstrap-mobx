@@ -1,0 +1,39 @@
+@font-face {
+	font-family: "Caviar Dreams";
+	src: url("./assets/fonts/Caviar-Dreams/CaviarDreams.ttf");
+}
+
+@font-face {
+	font-family: "Caviar Dreams Bold";
+	src: url("./assets/fonts/Caviar-Dreams/CaviarDreams_Bold.ttf");
+}
+
+@font-face {
+	font-family: "Caviar Dreams Italic";
+	src: url("./assets/fonts/Caviar-Dreams/CaviarDreams_Italic.ttf");
+}
+
+body {
+    background-color: #282c34;
+    font-family: "Caviar Dreams";
+    letter-spacing: 1px;
+}
+
+.wrapper {
+    padding: 0 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-family: "Caviar Dreams Bold";
+    margin-top: 20px;
+}
+
+th {
+    font-family: "Caviar Dreams Italic";
+    font-size: 20px;
+    &.interactive {
+        cursor: pointer;
+    }
+}

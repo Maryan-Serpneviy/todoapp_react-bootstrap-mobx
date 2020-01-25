@@ -1,0 +1,34 @@
+@font-face {
+    font-family: "Khand";
+	src: url("../../assets/fonts/khand.ttf");
+}
+
+.header {
+    height: 40px;
+    line-height: 38px;
+    background-color: #222222;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    padding-left: 25px;
+    font-family: "Khand";
+    font-size: 25px;
+}
+
+.link {
+    color: darken(#fff, 35%);
+    padding-right: 40px;
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    text-decoration: none;
+    color: lighten(#fff, 10%);
+}
+
+.active {
+    color: darken(#fff, 10%);
+}
