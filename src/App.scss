@@ -13,6 +13,15 @@
 	src: url("./assets/fonts/Caviar-Dreams/CaviarDreams_Italic.ttf");
 }
 
+@keyframes rotate-text-z {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 body {
     background-color: #282c34;
     font-family: "Caviar Dreams";
@@ -33,7 +42,11 @@ h1 {
 th {
     font-family: "Caviar Dreams Italic";
     font-size: 20px;
+    user-select: none;
     &.interactive {
         cursor: pointer;
+    }
+    &:hover {
+        animation: rotate-text-z 0.35s ease-in-out 0s 1;
     }
 }

@@ -1,5 +1,6 @@
 import { observable, computed, action } from 'mobx'
 import getCourses from '~cn/Courses/fakeApi'
+import { sortDirect, sortReverse } from '../utils/sort'
 
 export default class CoursesStore {
     constructor(rootStore) {
@@ -12,9 +13,14 @@ export default class CoursesStore {
     cached = getCourses()
     matched = []
     addValue = ''
+    
+    isSorted = {
+        course: false,
+        students: false
+    }
 
     @computed get getId() {
-        return (id) => Number(/\d+/.exec(id)[0])
+        return (rawId) => Number(/\d+/.exec(rawId)[0])
     }
 
     @action handleNew(inputVal) {
@@ -59,10 +65,11 @@ export default class CoursesStore {
 
     @action sort(title) {
         const prop = String(title.toLowerCase())
-        this.items = this.items.sort((a, b) => {
-            if (a[prop] > b[prop]) return 1
-            else if (a[prop] < b[prop]) return -1
-            return 0
-        })
+        
+        !this.isSorted[prop] ?
+            this.items = sortDirect(this.items, prop) :
+            this.items = sortReverse(this.items, prop)
+
+        this.isSorted[prop] = !this.isSorted[prop]
     }
 }

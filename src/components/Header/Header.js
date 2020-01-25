@@ -8,8 +8,23 @@ export default function Header() {
         <header className={header}>
             <div className={logo}>SevenCirclesOfHell</div>
             <div>
-                <NavLink className={link} activeClassName={active} to="/">Courses</NavLink>
-                <NavLink className={link} activeClassName={active} to="/students">Students</NavLink>
+                <NavLink
+                    className={link}
+                    activeClassName={active}
+                    to="/"
+                    exact
+                >
+                    Courses
+                </NavLink>
+
+                <NavLink
+                    className={link}
+                    activeClassName={active}
+                    to="/students"
+                    exact
+                >
+                    Students
+                </NavLink>
             </div>
         </header>
     )

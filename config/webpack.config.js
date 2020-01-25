@@ -14,6 +14,7 @@ const Path = {
 	components: path.join(__dirname, '../src/components'),
 	store: path.join(__dirname, '../src/store'),
 	hocs: path.join(__dirname, '../src/hocs'),
+	utils: path.join(__dirname, '..src/utils'),
 	images: path.join(__dirname, '../src/assets/images')
 }
 const isDev = process.env.NODE_ENV === 'development'
@@ -133,6 +134,7 @@ module.exports = {
 			'~cm': path.resolve(__dirname, Path.components),
 			'~s': path.resolve(__dirname, Path.store),
 			'~h': path.resolve(__dirname, Path.hocs),
+			'~u': path.resolve(__dirname, Path.utils),
 			'~i': path.resolve(__dirname, Path.images)
 		}
 	}
