@@ -1,6 +1,6 @@
 import { observable, computed, action } from 'mobx'
 import getCourses from '~cn/Courses/fakeApi'
-import { sortDirect, sortReverse } from '../utils/sort'
+import { sortDirect, sortReverse } from '../helpers/sort'
 
 export default class CoursesStore {
     constructor(rootStore) {
