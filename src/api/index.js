@@ -1,4 +1,4 @@
-import makeRequest from '~hlp/request'
+import makeRequest from '~/helpers/request'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com'
 const USERS = 'users'

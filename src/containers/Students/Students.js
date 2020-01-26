@@ -3,16 +3,17 @@ import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import withStore from '~hoc/withStore'
 import wrappedCourses from '~cn/Courses'
 import Header from '~cm/Header'
-import CoursesTable from '~cm/CoursesTable' // studentstable
+import StudentsTable from '~cm/StudentsTable'
 import ModalEdit from '~cm/ModalEdit'
 import ModalRemove from '~cm/ModalRemove'
 
 const Courses = wrappedCourses.wrappedComponent
 // add footer
-// withStore
-export default @useStore class extends Courses {
+
+export default @withStore class extends Courses {
     constructor(props) {
         super(props)
+        this.store = this.props.store.students
         this.handleInput = this.handleInput.bind(this)
         this.handleAdd = this.handleAdd.bind(this)
         this.handleClose = this.handleClose.bind(this)
@@ -24,7 +25,6 @@ export default @useStore class extends Courses {
         this.handleSort = this.handleSort.bind(this)
     }
 
-    store = this.props.store.students
     state = {
         showEdit: false,
         showDelete: false,
@@ -32,8 +32,13 @@ export default @useStore class extends Courses {
     }
     addInput = React.createRef()
 
+    componentDidMount() {
+        this.store.load()
+    }
+
     render() {
-        console.log(this.props)
+        const { showEdit, showDelete } = this.state
+
         return (
             <>
                 <Header />
@@ -47,6 +52,27 @@ export default @useStore class extends Courses {
                         />
                         <Button onClick={this.handleAdd} variant="outline-secondary">Add</Button>
                     </InputGroup>
+
+                    {showEdit && <ModalEdit
+                        show={this.state.showEdit}
+                        value={this.store.editValue}
+                        handleClose={this.handleClose}
+                        handleEdit={this.editItem}
+                        handleChange={this.handleChange}
+                    />}
+    
+                    {showDelete && <ModalRemove
+                        show={showDelete}
+                        handleClose={this.handleClose}
+                        handleDelete={this.deleteItem}
+                    />}
+
+                    <StudentsTable
+                        items={this.store.items}
+                        handleEdit={this.handleEdit}
+                        handleDelete={this.handleDelete}
+                        handleSort={this.handleSort}
+                    />
                 </section>
             </>
         )

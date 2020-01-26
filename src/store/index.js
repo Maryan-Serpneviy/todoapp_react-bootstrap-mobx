@@ -6,7 +6,7 @@ import * as service from '~/api'
 class RootStore {
     constructor() {
         this.service = {
-            service
+            ...service
         }
 
         this.courses = new CoursesStore(this)
