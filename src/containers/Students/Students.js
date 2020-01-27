@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Button, InputGroup, FormControl, Pagination } from 'react-bootstrap'
 import withStore from '~hoc/withStore'
 import wrappedCourses from '~cn/Courses'
 import Header from '~cm/Header'
@@ -28,16 +28,18 @@ export default @withStore class extends Courses {
     state = {
         showEdit: false,
         showDelete: false,
-        currId: null
+        currId: null,
+        amount: 5
     }
     addInput = React.createRef()
 
-    componentDidMount() {
-        this.store.load()
+    componentWillMount() {
+        !localStorage.getItem('students') ?
+            this.store.load() : null // load localStorage
     }
 
     render() {
-        const { showEdit, showDelete } = this.state
+        const { showEdit, showDelete, amount } = this.state
 
         return (
             <>
@@ -51,6 +53,7 @@ export default @withStore class extends Courses {
                             onKeyUp={this.handleInput}
                         />
                         <Button onClick={this.handleAdd} variant="outline-secondary">Add</Button>
+                        {/* AmountFilter amount={amount} change={changeamount} */}
                     </InputGroup>
 
                     {showEdit && <ModalEdit
@@ -67,12 +70,31 @@ export default @withStore class extends Courses {
                         handleDelete={this.deleteItem}
                     />}
 
-                    <StudentsTable
+                    {this.store.items.length && <StudentsTable
                         items={this.store.items}
+                        amount={amount}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
                         handleSort={this.handleSort}
-                    />
+                    />}
+
+                    {this.store.items.length && (
+                    <Pagination>
+                        <Pagination.First />
+                        <Pagination.Prev />
+                        <Pagination.Item>{1}</Pagination.Item>
+                        
+
+                        <Pagination.Item>{10}</Pagination.Item>
+                        <Pagination.Item>{11}</Pagination.Item>
+                        <Pagination.Item active>{12}</Pagination.Item>
+                        <Pagination.Item>{13}</Pagination.Item>
+                        <Pagination.Item disabled>{14}</Pagination.Item>
+
+                        <Pagination.Item>{20}</Pagination.Item>
+                        <Pagination.Next />
+                        <Pagination.Last />
+                    </Pagination>)}
                 </section>
             </>
         )

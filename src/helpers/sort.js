@@ -1,4 +1,4 @@
-export function sortDirect(array, prop) {
+export const sortDirect = (array, prop) => {
     return array.sort((a, b) => {
         if (a[prop] > b[prop]) return 1
         else if (a[prop] < b[prop]) return -1
@@ -6,7 +6,7 @@ export function sortDirect(array, prop) {
     })
 }
 
-export function sortReverse(array, prop) {
+export const sortReverse = (array, prop) => {
     return array.sort((a, b) => {
         if (a[prop] < b[prop]) return 1
         else if (a[prop] > b[prop]) return -1

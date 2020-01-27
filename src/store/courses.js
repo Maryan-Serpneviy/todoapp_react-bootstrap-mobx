@@ -1,10 +1,12 @@
 import { observable, computed, action } from 'mobx'
-import getCourses from '~/api/courses'
+import { getCourses } from '~/api/courses'
 import { sortDirect, sortReverse } from '~/helpers/sort'
 
 export default class CoursesStore {
     constructor(rootStore) {
         this.rootStore = rootStore
+        this.service = this.rootStore.service
+        this.storage = this.rootStore.storage
     }
 
     @observable items = getCourses()
@@ -13,6 +15,7 @@ export default class CoursesStore {
     cached = getCourses()
     matched = []
     addValue = ''
+    editKey = 'course'
     
     isSorted = {
         course: false,
@@ -23,20 +26,25 @@ export default class CoursesStore {
         return (rawId) => Number(/\d+/.exec(rawId)[0])
     }
 
+    @computed get itemExist() {
+        return this.cached.some(el => {
+            return el[this.editKey].toLowerCase() === this.addValue.toLowerCase()
+        })
+    }
+
     @action handleNew(inputVal) {
         this.matched = this.cached.filter(el => {
-            return el.course.toLowerCase().includes(inputVal.toLowerCase())
+            return el[this.editKey]
+                .toLowerCase()
+                .includes(inputVal.toLowerCase())
         })
         this.items = [...this.matched]
         this.addValue = inputVal
     }
 
     @action add() {
-        const exist = this.cached.find(el => {
-            return el.course.toLowerCase() === this.addValue.toLowerCase()
-        })
-        if (!exist) {
-            this.cached.push({
+        if (!this.itemExist) {
+            this.cached.unshift({
                 id: Math.round(Math.random() * 10000),
                 students: Math.round(Math.random() * 100),
                 course: this.addValue
@@ -46,7 +54,7 @@ export default class CoursesStore {
     }
 
     @action setEditValue(id) {
-        this.editValue = this.items.find(el => el.id === id).course
+        this.editValue = this.items.find(el => el.id === id)[this.editKey]
     }
 
     @action change(newVal) {
@@ -54,8 +62,8 @@ export default class CoursesStore {
     }
 
     @action edit(id) {
-        this.items.find(el => el.id === id).course = this.editValue
-        this.cached.find(el => el.id === id).course = this.editValue
+        this.items.find(el => el.id === id)[this.editKey] = this.editValue
+        this.cached.find(el => el.id === id)[this.editKey] = this.editValue
     }
 
     @action delete(id) {
@@ -64,7 +72,7 @@ export default class CoursesStore {
     }
 
     @action sort(title) {
-        const prop = String(title.toLowerCase())
+        const prop = title.toLowerCase()
         
         !this.isSorted[prop] ?
             this.items = sortDirect(this.items, prop) :
