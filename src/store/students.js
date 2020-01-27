@@ -15,6 +15,8 @@ export default class StudentsStore {
         this.edit = this.courses.edit
         this.delete = this.courses.delete
         this.sort = this.courses.sort
+        this.setItems = this.courses.setItems
+        this.getItems = this.courses.getItems
     }
 
     @observable items = []
@@ -24,13 +26,22 @@ export default class StudentsStore {
     matched = []
     addValue = ''
     editKey = 'name'
+    storageKey = 'students'
 
     isSorted = {
         name: false,
         email: false
     }
 
-    @action load() {
+    @action loadItems() {
+        if (!localStorage.getItem(this.storageKey)) {
+            this.requestItems()
+        } else {
+            this.getItems()
+        }
+    }
+
+    @action requestItems() {
         return new Promise((resolve, reject) => {
             this.service.getUsers().then(data => {
                 this.items = data
@@ -54,6 +65,7 @@ export default class StudentsStore {
                 email
             })
             this.items = [...this.cached]
+            this.setItems()
         }
     }
 }

@@ -76,6 +76,10 @@ export default @withStore class extends Component {
         this.store.sort(event.target.innerText)
     }
 
+    componentWillMount() {
+        this.store.loadItems()
+    }
+
     render() {
         const { showEdit, showDelete } = this.state
 

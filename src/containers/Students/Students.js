@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, InputGroup, FormControl, Pagination } from 'react-bootstrap'
+import { Button, InputGroup, FormControl, Pagination, Form } from 'react-bootstrap'
 import withStore from '~hoc/withStore'
 import wrappedCourses from '~cn/Courses'
 import Header from '~cm/Header'
@@ -29,13 +29,13 @@ export default @withStore class extends Courses {
         showEdit: false,
         showDelete: false,
         currId: null,
-        amount: 5
+        amount: 10
     }
     addInput = React.createRef()
 
     componentWillMount() {
-        !localStorage.getItem('students') ?
-            this.store.load() : null // load localStorage
+        this.store.loadItems()
+        localStorage.clear()
     }
 
     render() {
@@ -45,6 +45,15 @@ export default @withStore class extends Courses {
             <>
                 <Header />
                 <h1>Students</h1>
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                    <Form.Control as="select">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                    <option>25</option>
+                    </Form.Control>
+                </Form.Group>
                 <section className="wrapper">
                     <InputGroup className="p-3 mb-2">
                         <FormControl
