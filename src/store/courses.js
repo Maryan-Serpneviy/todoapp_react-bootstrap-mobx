@@ -55,8 +55,7 @@ export default class CoursesStore {
     }
 
     @action add() {
-        console.log(this.addValue)
-        if (!this.itemExist) {
+        if (!this.itemExist && this.addValue.trim()) {
             this.cached.unshift({
                 id: Math.round(Math.random() * 10000),
                 students: Math.round(Math.random() * 100),
