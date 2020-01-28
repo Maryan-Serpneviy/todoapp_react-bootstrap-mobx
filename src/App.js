@@ -9,11 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <Provider store={store}>
                 <div className="App">
-                    <Route path={process.env.PUBLIC_URL + '/'} component={Courses} exact />
-                    <Route path={process.env.PUBLIC_URL + '/students'} component={Students} exact />
+                    <Route path="/" component={Courses} exact />
+                    <Route path="/students" component={Students} exact />
                 </div>
             </Provider>
         </Router>

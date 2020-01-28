@@ -35,7 +35,6 @@ export default @withStore class extends Courses {
 
     componentWillMount() {
         this.store.loadItems()
-        localStorage.clear()
     }
 
     changeAmount = (event) => {
