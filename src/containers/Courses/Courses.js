@@ -23,7 +23,7 @@ export default @withStore class extends Component {
     }
 
     handleEnterKey = event => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && this.store.addValue.trim()) {
             this.store.add()
         }
     }
