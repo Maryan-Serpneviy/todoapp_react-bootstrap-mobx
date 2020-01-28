@@ -33,12 +33,16 @@ export default @withStore class extends Courses {
     }
     addInput = React.createRef()
 
+    changeAmount = (event) => {
+        this.store.setFilter(event.target.value)
+    }
+
     componentWillMount() {
         this.store.loadItems()
     }
 
-    changeAmount = (event) => {
-        this.store.setFilter(event.target.value)
+    componentDidMount() {
+        this.store.setFilter(this.store.amount)
     }
 
     render() {
