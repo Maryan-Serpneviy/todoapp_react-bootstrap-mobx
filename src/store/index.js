@@ -1,3 +1,4 @@
+import { configure } from 'mobx'
 import CoursesStore from '~s/courses'
 import StudentsStore from '~s/students'
 
@@ -5,6 +6,7 @@ import * as sort from '~/helpers/sort'
 import * as service from '~/api'
 import { getCourses } from '~/api/courses'
 
+configure({ enforceActions: 'observed' })
 class RootStore {
     constructor() {
         this.service = {

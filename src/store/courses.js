@@ -25,7 +25,7 @@ export default class CoursesStore {
         students: false
     }
 
-    @computed get getId() {
+    get getId() {
         return (rawId) => Number(/\d+/.exec(rawId)[0])
     }
 

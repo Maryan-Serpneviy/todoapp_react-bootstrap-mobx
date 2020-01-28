@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pagination } from 'react-bootstrap/Pagination'
+import { Pagination } from 'react-bootstrap'
 
 export default function PaginationComponent(props) {
    return (
