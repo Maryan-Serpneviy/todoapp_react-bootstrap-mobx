@@ -14,7 +14,9 @@ export default class CoursesStore {
 
     cached = []
     matched = []
+    currId = null
     addValue = ''
+
     editKey = 'course'
     storageKey = 'courses'
     
@@ -43,13 +45,13 @@ export default class CoursesStore {
     }
 
     @action handleNew(inputVal) {
+        this.addValue = inputVal
         this.matched = this.cached.filter(el => {
             return el[this.editKey]
                 .toLowerCase()
                 .includes(inputVal.toLowerCase())
         })
         this.items = [...this.matched]
-        this.addValue = inputVal
     }
 
     @action add() {
@@ -60,12 +62,14 @@ export default class CoursesStore {
                 course: this.addValue
             })
             this.items = [...this.cached]
+            this.addValue = ''
             this.setItems()
         }
     }
 
-    @action setEditValue(id) {
-        this.editValue = this.items.find(el => el.id === id)[this.editKey]
+    @action setEditValue(rawId) {
+        this.currId = this.getId(rawId)
+        this.editValue = this.items.find(el => el.id === this.currId)[this.editKey]
     }
 
     @action change(newVal) {
@@ -74,12 +78,14 @@ export default class CoursesStore {
 
     @action edit(id) {
         this.items.find(el => el.id === id)[this.editKey] = this.editValue
+        this.cached.find(el => el.id === id)[this.editKey] = this.editValue
         this.setItems()
     }
 
     @action delete(id) {
         this.items = this.cached.filter(el => el.id !== id)
         this.cached = [...this.items] // update cached data
+        this.addValue = ''
         this.setItems()
     }
 

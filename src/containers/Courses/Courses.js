@@ -10,21 +10,22 @@ export default @withStore class extends Component {
     store = this.props.store.courses
     state = {
         showEdit: false,
-        showDelete: false,
-        currId: null
+        showDelete: false
     }
     addInput = React.createRef()
 
+    componentWillMount() {
+        this.store.loadItems()
+    }
+
     handleInput = event => {
-        if (event.key === 'Enter') {
-            this.handleAdd()
-        }
         this.store.handleNew(event.target.value)
     }
 
-    handleAdd = () => {
-        this.addInput.current.value = ''
-        this.store.add()
+    handleEnterKey = event => {
+        if (event.key === 'Enter') {
+            this.store.add()
+        }
     }
 
     handleClose = () => {
@@ -35,12 +36,8 @@ export default @withStore class extends Component {
     }
 
     handleEdit = event => {
-        const id = this.store.getId(event.target.id)
-        this.store.setEditValue(id)
-        this.setState({
-            showEdit: true,
-            currId: id
-        })
+        this.store.setEditValue(event.target.id)
+        this.setState({ showEdit: true })
     }
 
     handleChange = event => {
@@ -54,30 +51,23 @@ export default @withStore class extends Component {
     }
 
     editItem = () => {
-        this.store.edit(this.state.currId)
+        this.store.edit(this.store.currId)
         this.setState({ showEdit: false })
     }
 
     handleDelete = event => {
-        const id = this.store.getId(event.target.id)
-        this.setState({
-            showDelete: true,
-            currId: id
-        })
+        this.store.currId = this.store.getId(event.target.id)
+        this.setState({ showDelete: true })
     }
 
     deleteItem = () => {
-        this.addInput.current.value = ''
-        this.store.delete(this.state.currId)
+        this.store.delete(this.store.currId)
         this.setState({ showDelete: false })
+        this.addInput.current.focus()
     }
 
     handleSort = event => {
         this.store.sort(event.target.innerText)
-    }
-
-    componentWillMount() {
-        this.store.loadItems()
     }
 
     render() {
@@ -91,10 +81,12 @@ export default @withStore class extends Component {
                     <InputGroup className="p-3 mb-2">
                         <FormControl
                             ref={this.addInput}
+                            value={this.store.addValue}
+                            onChange={this.handleInput}
+                            onKeyDown={this.handleEnterKey}
                             placeholder="Recipient's course title"
-                            onKeyUp={this.handleInput}
                         />
-                        <Button onClick={this.handleAdd} variant="outline-secondary">Add</Button>
+                        <Button onClick={() => this.store.add()} variant="outline-secondary">Add</Button>
                     </InputGroup>
     
                     {showEdit && <ModalEdit

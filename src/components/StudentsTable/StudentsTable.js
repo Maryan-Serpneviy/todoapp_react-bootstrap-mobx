@@ -3,7 +3,7 @@ import { Table, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 export default function StudentsTable(props) {
-    const { items, handleEdit, handleDelete, handleSort, amount } = props
+    const { items, handleEdit, handleDelete, handleSort } = props
 
     return (
         <Table striped bordered hover variant="dark">
@@ -16,23 +16,7 @@ export default function StudentsTable(props) {
                 </tr>
             </thead>
             <tbody>
-                {items.map((item, index) => {
-                    if (index < amount) {
-                        return (
-                            <tr className="text-center" key={item.id}>
-                                <td>{item.name}</td>
-                                <td>{item.email}</td>
-                                <td>
-                                    <Button id={`student_edit-${item.id}`} onClick={handleEdit}>Edit</Button>
-                                </td>
-                                <td>
-                                    <Button id={`student_del-${item.id}`} onClick={handleDelete} variant="danger">Delete</Button>
-                                </td>
-                            </tr>
-                        )
-                    }
-                })}
-                {/* {items.map(item => (
+                {items.map(item => (
                     <tr className="text-center" key={item.id}>
                         <td>{item.name}</td>
                         <td>{item.email}</td>
@@ -43,7 +27,7 @@ export default function StudentsTable(props) {
                             <Button id={`student_del-${item.id}`} onClick={handleDelete} variant="danger">Delete</Button>
                         </td>
                     </tr>
-                ))} */}
+                ))}
             </tbody>
         </Table>
     )

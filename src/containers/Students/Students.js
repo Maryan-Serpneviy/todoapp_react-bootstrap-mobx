@@ -1,21 +1,23 @@
 import React from 'react'
-import { Button, InputGroup, FormControl, Pagination, Form } from 'react-bootstrap'
+import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import withStore from '~hoc/withStore'
 import wrappedCourses from '~cn/Courses'
 import Header from '~cm/Header'
+import Footer from '~cm/Footer'
+import PaginationComponent from '~cm/PaginationComponent'
 import StudentsTable from '~cm/StudentsTable'
 import ModalEdit from '~cm/ModalEdit'
 import ModalRemove from '~cm/ModalRemove'
+import AmountFilter from '~cm/AmountFilter'
 
 const Courses = wrappedCourses.wrappedComponent
-// add footer
 
 export default @withStore class extends Courses {
     constructor(props) {
         super(props)
         this.store = this.props.store.students
         this.handleInput = this.handleInput.bind(this)
-        this.handleAdd = this.handleAdd.bind(this)
+        this.handleEnterKey = this.handleEnterKey.bind(this)
         this.handleClose = this.handleClose.bind(this)
         this.handleEdit = this.handleEdit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -27,9 +29,7 @@ export default @withStore class extends Courses {
 
     state = {
         showEdit: false,
-        showDelete: false,
-        currId: null,
-        amount: 10
+        showDelete: false
     }
     addInput = React.createRef()
 
@@ -38,31 +38,31 @@ export default @withStore class extends Courses {
         localStorage.clear()
     }
 
+    changeAmount = (event) => {
+        this.store.setFilter(event.target.value)
+    }
+
     render() {
-        const { showEdit, showDelete, amount } = this.state
+        const { showEdit, showDelete } = this.state
 
         return (
             <>
                 <Header />
                 <h1>Students</h1>
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Control as="select">
-                    <option>5</option>
-                    <option>10</option>
-                    <option>15</option>
-                    <option>20</option>
-                    <option>25</option>
-                    </Form.Control>
-                </Form.Group>
+                <AmountFilter
+                    amount={this.store.amount}
+                    changeAmount={this.changeAmount}
+                />
                 <section className="wrapper">
                     <InputGroup className="p-3 mb-2">
                         <FormControl
                             ref={this.addInput}
+                            value={this.store.addValue}
+                            onChange={this.handleInput}
+                            onKeyDown={this.handleEnterKey}
                             placeholder="Recipient's username"
-                            onKeyUp={this.handleInput}
                         />
-                        <Button onClick={this.handleAdd} variant="outline-secondary">Add</Button>
-                        {/* AmountFilter amount={amount} change={changeamount} */}
+                        <Button onClick={() => this.store.add()} variant="outline-secondary">Add</Button>
                     </InputGroup>
 
                     {showEdit && <ModalEdit
@@ -81,29 +81,11 @@ export default @withStore class extends Courses {
 
                     {this.store.items.length && <StudentsTable
                         items={this.store.items}
-                        amount={amount}
+                        amount={this.store.amount}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
                         handleSort={this.handleSort}
                     />}
-
-                    {this.store.items.length && (
-                    <Pagination>
-                        <Pagination.First />
-                        <Pagination.Prev />
-                        <Pagination.Item>{1}</Pagination.Item>
-                        
-
-                        <Pagination.Item>{10}</Pagination.Item>
-                        <Pagination.Item>{11}</Pagination.Item>
-                        <Pagination.Item active>{12}</Pagination.Item>
-                        <Pagination.Item>{13}</Pagination.Item>
-                        <Pagination.Item disabled>{14}</Pagination.Item>
-
-                        <Pagination.Item>{20}</Pagination.Item>
-                        <Pagination.Next />
-                        <Pagination.Last />
-                    </Pagination>)}
                 </section>
             </>
         )

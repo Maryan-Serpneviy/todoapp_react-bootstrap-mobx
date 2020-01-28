@@ -6,6 +6,8 @@ export default class StudentsStore {
         this.courses = this.rootStore.courses
         this.service = this.rootStore.service
         this.storage = this.rootStore.storage
+        this.sortDirect = this.rootStore.sortDirect
+        this.sortReverse = this.rootStore.sortReverse
 
         this.getId = this.courses.getId
         this.itemExist = this.courses.itemExist
@@ -21,6 +23,7 @@ export default class StudentsStore {
 
     @observable items = []
     @observable editValue = ''
+    @observable amount = 20
 
     cached = []
     matched = []
@@ -43,9 +46,9 @@ export default class StudentsStore {
 
     @action requestItems() {
         return new Promise((resolve, reject) => {
-            this.service.getUsers().then(data => {
-                this.items = data
+            this.service.getComments().then(data => {
                 this.cached = data
+                this.setFilter(this.amount)
                 resolve(true)
                 reject(false)
             })
@@ -65,7 +68,18 @@ export default class StudentsStore {
                 email
             })
             this.items = [...this.cached]
+            this.addValue = ''
             this.setItems()
+        }
+    }
+
+    @action setFilter(value) {
+        if (value === 'All') {
+            this.items = [...this.cached]
+        } else {
+            this.amount = Number(value)
+            this.matched = this.cached.slice(0, this.amount)
+            this.items = [...this.matched]
         }
     }
 }

@@ -22,6 +22,7 @@ const timeoutableFetch = (url, options = {}) => {
                 return response.json()
             })
             .then(resolve, reject)
+            .catch(err => location.reload())
     })
 }
 
