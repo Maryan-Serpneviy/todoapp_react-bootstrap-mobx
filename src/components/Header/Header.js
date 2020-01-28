@@ -11,7 +11,7 @@ export default function Header() {
                 <NavLink
                     className={link}
                     activeClassName={active}
-                    to={process.env.PUBLIC_URL + '/'}
+                    to='/'
                     exact
                 >
                     Courses
@@ -20,7 +20,7 @@ export default function Header() {
                 <NavLink
                     className={link}
                     activeClassName={active}
-                    to={process.env.PUBLIC_URL + '/students'}
+                    to='/students'
                     exact
                 >
                     Students
