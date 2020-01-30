@@ -3,9 +3,7 @@ import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import withStore from '~hoc/withStore'
 import wrappedCourses from '~cn/Courses'
 import Header from '~cm/Header'
-import Footer from '~cm/Footer'
-import PaginationComponent from '~cm/PaginationComponent'
-import StudentsTable from '~cm/StudentsTable'
+import TableComponent from '~cm/TableComponent'
 import ModalEdit from '~cm/ModalEdit'
 import ModalRemove from '~cm/ModalRemove'
 import AmountFilter from '~cm/AmountFilter'
@@ -82,12 +80,13 @@ export default @withStore class extends Courses {
                         handleDelete={this.deleteItem}
                     />}
 
-                    {this.store.items.length && <StudentsTable
+                    {this.store.items.length && <TableComponent
                         items={this.store.items}
-                        amount={this.store.amount}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
                         handleSort={this.handleSort}
+                        tableHeaders={['Name', 'Email']}
+                        baseId="student"
                     />}
                 </section>
             </>

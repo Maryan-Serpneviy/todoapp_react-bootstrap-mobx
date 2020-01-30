@@ -8,7 +8,7 @@ const timeoutableFetch = (url, options = {}) => {
     
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
-            reject(new Error('Server timeout'))
+            reject(window.location.reload())
             controller.abort()
         }, timeout)
         fetch(url, { signal, ...rest })
@@ -16,13 +16,13 @@ const timeoutableFetch = (url, options = {}) => {
             .then((response) => {
                 if (response.status !== 200) {
                     return response.text().then((text) => {
-                        throw new Error(text)
+                        reject()
                     })
                 }
                 return response.json()
             })
             .then(resolve, reject)
-            .catch(err => location.reload())
+            .catch(() => window.location.reload())
     })
 }
 

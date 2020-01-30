@@ -12,8 +12,8 @@ export default function App() {
         <Router basename={process.env.PUBLIC_URL}>
             <Provider store={store}>
                 <div className="App">
-                    <Route path="/" component={Courses} exact />
-                    <Route path="/students" component={Students} exact />
+                    <Route path="/students" component={Courses} exact />
+                    <Route path="/" component={Students} exact />
                 </div>
             </Provider>
         </Router>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import withStore from '~hoc/withStore'
 import Header from '~cm/Header'
-import CoursesTable from '~cm/CoursesTable'
+import TableComponent from '~cm/TableComponent'
 import ModalEdit from '~cm/ModalEdit'
 import ModalRemove from '~cm/ModalRemove'
 
@@ -15,6 +15,7 @@ export default @withStore class extends Component {
     addInput = React.createRef()
 
     componentWillMount() {
+        localStorage.clear()
         this.store.loadItems()
     }
 
@@ -72,6 +73,7 @@ export default @withStore class extends Component {
 
     render() {
         const { showEdit, showDelete } = this.state
+        const { items, addValue, editValue } = this.store
 
         return (
             <>
@@ -81,7 +83,7 @@ export default @withStore class extends Component {
                     <InputGroup className="p-3 mb-2">
                         <FormControl
                             ref={this.addInput}
-                            value={this.store.addValue}
+                            value={addValue}
                             onChange={this.handleInput}
                             onKeyDown={this.handleEnterKey}
                             placeholder="Recipient's course title"
@@ -90,8 +92,8 @@ export default @withStore class extends Component {
                     </InputGroup>
     
                     {showEdit && <ModalEdit
-                        show={this.state.showEdit}
-                        value={this.store.editValue}
+                        show={showEdit}
+                        value={editValue}
                         handleClose={this.handleClose}
                         handleEdit={this.editItem}
                         handleChange={this.handleChange}
@@ -102,12 +104,14 @@ export default @withStore class extends Component {
                         handleClose={this.handleClose}
                         handleDelete={this.deleteItem}
                     />}
-    
-                    <CoursesTable
-                        items={this.store.items}
+
+                    <TableComponent
+                        items={items}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
                         handleSort={this.handleSort}
+                        tableHeaders={['Course', 'Students']}
+                        baseId="course"
                     />
                 </section>
             </>
