@@ -23,16 +23,7 @@ export default @withStore class extends Courses {
         this.handleDelete = this.handleDelete.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
         this.handleSort = this.handleSort.bind(this)
-    }
-
-    state = {
-        showEdit: false,
-        showDelete: false
-    }
-    addInput = React.createRef()
-
-    changeAmount = (event) => {
-        this.store.setFilter(event.target.value)
+        this.handleDnd = this.handleDnd.bind(this)
     }
 
     componentWillMount() {
@@ -40,11 +31,23 @@ export default @withStore class extends Courses {
     }
 
     componentDidMount() {
+        this.setState({ isLoading: false })
         this.store.setFilter(this.store.amount)
     }
 
+    state = {
+        showEdit: false,
+        showDelete: false,
+        iaLoading: true
+    }
+    addInput = React.createRef()
+
+    changeAmount = (event) => {
+        this.store.setFilter(event.target.value)
+    }
+
     render() {
-        const { showEdit, showDelete } = this.state
+        const { showEdit, showDelete, isLoading } = this.state
 
         return (
             <>
@@ -80,12 +83,16 @@ export default @withStore class extends Courses {
                         handleDelete={this.deleteItem}
                     />}
 
+                    {isLoading && <div style={{ textAlign: center, color: '#fff' }}
+                    >Loading items...</div>}
+
                     {this.store.items.length && <TableComponent
                         items={this.store.items}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
                         handleSort={this.handleSort}
-                        tableHeaders={['Name', 'Email']}
+                        handleDnd={this.handleDnd}
+                        tableHeadings={['Name', 'Email']}
                         baseId="student"
                     />}
                 </section>

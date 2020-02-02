@@ -1,3 +1,5 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
 @font-face {
 	font-family: "Caviar Dreams";
 	src: url("./assets/fonts/Caviar-Dreams/CaviarDreams.ttf");
@@ -49,5 +51,12 @@ th {
     }
     &:hover {
         animation: rotate-text-z 0.35s ease-in-out 0s 1;
+    }
+}
+
+tr {
+    cursor: grab;
+    &:active {
+        cursor: grabbing;
     }
 }

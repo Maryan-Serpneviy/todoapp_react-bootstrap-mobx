@@ -25,7 +25,7 @@ export default class CoursesStore {
         students: false
     }
 
-    get getId() {
+    @computed get getId() {
         return (rawId) => Number(/\d+/.exec(rawId)[0])
     }
 
@@ -97,6 +97,12 @@ export default class CoursesStore {
             this.items = this.sortReverse(this.items, prop)
 
         this.isSorted[prop] = !this.isSorted[prop]
+    }
+
+    @action dragAndDrop(newItems) {
+        this.items = newItems
+        this.cached = newItems
+        this.setItems()
     }
 
     setItems() {

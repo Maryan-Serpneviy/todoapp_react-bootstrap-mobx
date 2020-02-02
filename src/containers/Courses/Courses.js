@@ -15,7 +15,6 @@ export default @withStore class extends Component {
     addInput = React.createRef()
 
     componentWillMount() {
-        localStorage.clear()
         this.store.loadItems()
     }
 
@@ -71,6 +70,10 @@ export default @withStore class extends Component {
         this.store.sort(event.target.innerText)
     }
 
+    handleDnd = newItems => {
+        this.store.dragAndDrop(newItems)
+    }
+
     render() {
         const { showEdit, showDelete } = this.state
         const { items, addValue, editValue } = this.store
@@ -104,13 +107,14 @@ export default @withStore class extends Component {
                         handleClose={this.handleClose}
                         handleDelete={this.deleteItem}
                     />}
-
+                    
                     <TableComponent
                         items={items}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
                         handleSort={this.handleSort}
-                        tableHeaders={['Course', 'Students']}
+                        handleDnd={this.handleDnd}
+                        tableHeadings={['Course', 'Students']}
                         baseId="course"
                     />
                 </section>

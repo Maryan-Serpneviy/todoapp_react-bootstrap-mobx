@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx'
+import { observable, action, computed } from 'mobx'
 
 export default class StudentsStore {
     constructor(rootStore) {
@@ -10,13 +10,13 @@ export default class StudentsStore {
         this.sortReverse = this.rootStore.sortReverse
 
         this.getId = this.courses.getId
-        this.itemExist = this.courses.itemExist
         this.handleNew = this.courses.handleNew
         this.setEditValue = this.courses.setEditValue
         this.change = this.courses.change
         this.edit = this.courses.edit
         this.delete = this.courses.delete
         this.sort = this.courses.sort
+        this.dragAndDrop = this.courses.dragAndDrop
         this.setItems = this.courses.setItems
         this.getItems = this.courses.getItems
     }
@@ -34,6 +34,12 @@ export default class StudentsStore {
     isSorted = {
         name: false,
         email: false
+    }
+
+    @computed get itemExist() {
+        return this.cached.some(el => {
+            return el.name.toLowerCase() === this.addValue.toLowerCase()
+        })
     }
 
     @action loadItems() {
@@ -56,10 +62,7 @@ export default class StudentsStore {
     }
 
     @action add() {
-        const exist = this.cached.some(el => {
-            return el.name.toLowerCase() === this.addValue.toLowerCase()
-        })
-        if (!exist) {
+        if (!this.itemExist) {
             const email = this.cached[Math.round(Math.random() * this.cached.length)].email
 
             this.cached.unshift({
