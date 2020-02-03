@@ -31,14 +31,12 @@ export default @withStore class extends Courses {
     }
 
     componentDidMount() {
-        this.setState({ isLoading: false })
         this.store.setFilter(this.store.amount)
     }
 
     state = {
         showEdit: false,
-        showDelete: false,
-        iaLoading: true
+        showDelete: false
     }
     addInput = React.createRef()
 
@@ -47,7 +45,7 @@ export default @withStore class extends Courses {
     }
 
     render() {
-        const { showEdit, showDelete, isLoading } = this.state
+        const { showEdit, showDelete } = this.state
 
         return (
             <>
@@ -82,9 +80,6 @@ export default @withStore class extends Courses {
                         handleClose={this.handleClose}
                         handleDelete={this.deleteItem}
                     />}
-
-                    {isLoading && <div style={{ textAlign: center, color: '#fff' }}
-                    >Loading items...</div>}
 
                     {this.store.items.length && <TableComponent
                         items={this.store.items}

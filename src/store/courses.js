@@ -36,11 +36,16 @@ export default class CoursesStore {
     }
 
     @action loadItems() {
-        if (!localStorage.getItem(this.storageKey)) {
+        try {
+            const serializedState = this.storage.getItem(this.storageKey)
+            if (serializedState === null) {
+                return undefined
+            }
+            this.items = JSON.parse(serializedState)
+            this.cached = [...this.items] // for search results filter
+        } catch (err) {
             this.items = this.service.getCourses()
             this.cached = this.service.getCourses()
-        } else {
-            this.getItems()
         }
     }
 
@@ -106,11 +111,10 @@ export default class CoursesStore {
     }
 
     setItems() {
-        this.storage.setItem(this.storageKey, JSON.stringify(this.cached))
-    }
-
-    getItems() {
-        this.items = JSON.parse(this.storage.getItem(this.storageKey))
-        this.cached = [...this.items] // for search results filter
+        try {
+            this.storage.setItem(this.storageKey, JSON.stringify(this.cached))
+        } catch (err) {
+            console.error(err)
+        }
     }
 }
