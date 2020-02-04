@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
-import PropTypes from 'prop-types'
 import styles from './AmountFilter.module.scss'
 
 interface FilterProps {
@@ -24,11 +23,6 @@ const AmountFilter: React.FC<FilterProps> = (props) => {
          </Form.Control>
       </Form.Group>
    )
-}
-
-AmountFilter.propTypes = {
-   amount: PropTypes.number,
-   changeAmount: PropTypes.func.isRequired
 }
 
 export default AmountFilter
