@@ -35,7 +35,7 @@ export default class extends Courses {
         this.store.setFilter(this.store.amount)
     }
 
-    state = {
+    private state = {
         showEdit: false,
         showDelete: false
     }
