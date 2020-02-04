@@ -1,8 +1,25 @@
 import React, { useRef } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { Button } from 'react-bootstrap'
 
-export default function TableRow(props) {
+interface RowProps {
+   item: object
+   index: number
+   baseId?: string
+   first: string
+   second: string
+   handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
+   handleDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
+   moveItem: (dragIndex: number, hoverIndex: number) => void
+}
+
+interface DragItem {
+   id: any
+   text: string
+   index: number
+}
+
+const TableRow: React.FC<RowProps> = props => {
    const {
       item,
       index,
@@ -13,37 +30,29 @@ export default function TableRow(props) {
       handleDelete,
       moveItem
    } = props
-   const ref = useRef(null)
+   const ref = useRef<HTMLTableRowElement>(null)
 
    const [, drop] = useDrop({
       accept: 'item',
-      hover(item, monitor) {
+      hover(item: DragItem, monitor: DropTargetMonitor) {
          if (!ref.current) {
             return
          }
          const dragIndex = item.index
          const hoverIndex = index
-         // Avoid replace items with themselves
          if (dragIndex === hoverIndex) {
             return
          }
-         // Determine rectangle on screen
          const hoverBoundingRect = ref.current.getBoundingClientRect()
-         // Get vertical middle
          const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-         // Determine mouse position
          const clientOffset = monitor.getClientOffset()
-         // Get pixels to the top
          const hoverClientY = clientOffset.y - hoverBoundingRect.top
-         // Dragging downwards
          if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
             return
          }
-         // Dragging upwards
          if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
             return
          }
-         // Time to actually perform the action
          moveItem(dragIndex, hoverIndex)
          item.index = hoverIndex
       }
@@ -51,7 +60,7 @@ export default function TableRow(props) {
 
    const [{ isDragging }, drag] = useDrag({
       item: { type: 'item', id: item.id, index },
-      collect: monitor => ({
+      collect: (monitor: any) => ({
          isDragging: monitor.isDragging()
       })
    })
@@ -75,3 +84,5 @@ export default function TableRow(props) {
       </tr>
    )
 }
+
+export default TableRow

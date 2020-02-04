@@ -1,9 +1,18 @@
 import React, { useCallback } from 'react'
 import { Table } from 'react-bootstrap'
 import TableRow from './TableRow'
-import PropTypes from 'prop-types'
 
-function TableComponent(props) {
+interface TableProps {
+    items: object[]
+    handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
+    handleDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
+    handleSort?: (event: React.MouseEvent<HTMLTableHeaderCellElement>) => void
+    handleDnd: (newItems: object[]) => void
+    tableHeadings: string[]
+    baseId?: string
+}
+
+const TableComponent: React.FC<TableProps> = props => {
     const {
         items,
         handleEdit,
@@ -15,7 +24,7 @@ function TableComponent(props) {
     const [first, second] = props.tableHeadings
 
     const moveItem = useCallback(
-        (dragIndex, hoverIndex) => {
+        (dragIndex: number, hoverIndex: number) => {
             const dragItem = items[dragIndex]
             const newItems = [...items]
             newItems.splice(dragIndex, 1)
@@ -25,7 +34,7 @@ function TableComponent(props) {
         [items]
     )
 
-    const renderRow = (item, index) => (
+    const renderRow = (item: object, index: number) => (
         <TableRow
             key={item.id}
             index={index}
@@ -55,15 +64,6 @@ function TableComponent(props) {
             </tbody>
         </Table>
     )
-}
-
-TableComponent.propTypes = {
-    items: PropTypes.array.isRequired,
-    handleEdit: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-    handleSort: PropTypes.func,
-    tableHeadings: PropTypes.array.isRequired,
-    baseId: PropTypes.string
 }
 
 export default TableComponent

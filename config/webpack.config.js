@@ -27,7 +27,7 @@ module.exports = {
         path: path.resolve(__dirname, Path.dist),
         filename: '[name].[hash].js',
         publicPath: '/'
-   },
+    },
 	optimization: {
 		splitChunks: {
 			cacheGroups: {
@@ -136,6 +136,7 @@ module.exports = {
 			'~hlp': path.resolve(__dirname, Path.helpers),
 			'~hoc': path.resolve(__dirname, Path.hocs),
 			'~i': path.resolve(__dirname, Path.images)
-		}
+		},
+		extensions: ['*', 'css', 'scss', '.js', '.jsx', '.ts', '.tsx', '.json']
 	}
 }

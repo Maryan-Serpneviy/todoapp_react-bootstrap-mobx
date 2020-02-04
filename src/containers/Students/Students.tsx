@@ -10,7 +10,8 @@ import AmountFilter from '~cm/AmountFilter'
 
 const Courses = wrappedCourses.wrappedComponent
 
-export default @withStore class extends Courses {
+@withStore
+export default class extends Courses {
     constructor(props) {
         super(props)
         this.store = this.props.store.students
@@ -40,7 +41,7 @@ export default @withStore class extends Courses {
     }
     addInput = React.createRef()
 
-    changeAmount = (event) => {
+    changeAmount = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         this.store.setFilter(event.target.value)
     }
 
@@ -81,7 +82,7 @@ export default @withStore class extends Courses {
                         handleDelete={this.deleteItem}
                     />}
 
-                    {this.store.items.length && <TableComponent
+                    <TableComponent
                         items={this.store.items}
                         handleEdit={this.handleEdit}
                         handleDelete={this.handleDelete}
@@ -89,7 +90,7 @@ export default @withStore class extends Courses {
                         handleDnd={this.handleDnd}
                         tableHeadings={['Name', 'Email']}
                         baseId="student"
-                    />}
+                    />
                 </section>
             </>
         )

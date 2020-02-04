@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx'
 
 export default class StudentsStore {
-    constructor(rootStore) {
+    constructor(rootStore: object) {
         this.rootStore = rootStore
         this.courses = this.rootStore.courses
         this.service = this.rootStore.service
@@ -18,35 +18,39 @@ export default class StudentsStore {
         this.sort = this.courses.sort
         this.dragAndDrop = this.courses.dragAndDrop
         this.setItems = this.courses.setItems
-        this.getItems = this.courses.getItems
     }
 
-    @observable items = []
-    @observable editValue = ''
-    @observable amount = 20
+    @observable items: object[] = []
+    @observable editValue: string = ''
+    @observable amount: number = 20
 
-    cached = []
-    matched = []
+    private cached: object[] = []
+    private matched: object[] = []
     addValue = ''
-    editKey = 'name'
-    storageKey = 'students'
+    private editKey = 'name'
+    private storageKey = 'students'
 
-    isSorted = {
+    private isSorted = {
         name: false,
         email: false
     }
 
-    @computed get itemExist() {
+    @computed get itemExist(): boolean {
         return this.cached.some(el => {
             return el.name.toLowerCase() === this.addValue.toLowerCase()
         })
     }
 
-    @action loadItems() {
-        if (!localStorage.getItem(this.storageKey)) {
+    @action loadItems(): void {
+        try {
+            const serializedState = this.storage.getItem(this.storageKey)
+            if (serializedState === null) {
+                throw new Error('local storage disabled')
+            }
+            this.items = JSON.parse(serializedState)
+            this.cached = [...this.items] // for search filter
+        } catch (err) {
             this.requestItems()
-        } else {
-            this.getItems()
         }
     }
 
@@ -58,10 +62,11 @@ export default class StudentsStore {
                 resolve(true)
                 reject(false)
             })
+            .catch(() => this.requestItems())
         })
     }
 
-    @action add() {
+    @action add(): void {
         if (!this.itemExist) {
             const email = this.cached[Math.round(Math.random() * this.cached.length)].email
 
@@ -76,7 +81,7 @@ export default class StudentsStore {
         }
     }
 
-    @action setFilter(value) {
+    @action setFilter(value: string): void {
         if (value === 'All') {
             this.items = [...this.cached]
         } else {

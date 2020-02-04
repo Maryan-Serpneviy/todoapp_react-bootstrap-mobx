@@ -1,8 +1,15 @@
 import React, { useRef, useEffect } from 'react'
 import { Modal, Button, InputGroup, FormControl } from 'react-bootstrap'
-import PropTypes from 'prop-types'
 
-export default function ModalEdit(props) {
+interface ModalProps {
+    show: boolean
+    value?: string
+    handleClose: () => void
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
+}
+
+const ModalEdit: React.FC<ModalProps> = props => {
     const { show, value, handleClose, handleChange, handleEdit } = props
     const input = useRef(null)
 
@@ -40,10 +47,4 @@ export default function ModalEdit(props) {
     )
 }
 
-ModalEdit.propTypes = {
-    show: PropTypes.bool.isRequired,
-    value: PropTypes.string.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    handleEdit: PropTypes.func.isRequired
-}
+export default ModalEdit

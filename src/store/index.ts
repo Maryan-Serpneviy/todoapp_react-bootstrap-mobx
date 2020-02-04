@@ -8,6 +8,11 @@ import { getCourses } from '~/api/courses'
 
 configure({ enforceActions: 'observed' })
 class RootStore {
+    service: object
+    storage: object
+    courses: object
+    students: object
+
     constructor() {
         this.service = {
             ...service,

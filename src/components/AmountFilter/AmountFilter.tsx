@@ -3,7 +3,12 @@ import { Form } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import styles from './AmountFilter.module.scss'
 
-export default function AmountFilter(props) {
+interface FilterProps {
+   amount: number
+   changeAmount: (event: React.ChangeEvent<HTMLSelectElement>) => void
+}
+
+const AmountFilter: React.FC<FilterProps> = (props) => {
    const { amount, changeAmount } = props
    
    const options = []
@@ -25,3 +30,5 @@ AmountFilter.propTypes = {
    amount: PropTypes.number,
    changeAmount: PropTypes.func.isRequired
 }
+
+export default AmountFilter

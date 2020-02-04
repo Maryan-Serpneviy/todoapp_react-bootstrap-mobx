@@ -6,9 +6,10 @@ import TableComponent from '~cm/TableComponent'
 import ModalEdit from '~cm/ModalEdit'
 import ModalRemove from '~cm/ModalRemove'
 
-export default @withStore class extends Component {
-    store = this.props.store.courses
-    state = {
+@withStore
+export default class extends Component {
+    private store = this.props.store.courses
+    private state = {
         showEdit: false,
         showDelete: false
     }
@@ -18,29 +19,29 @@ export default @withStore class extends Component {
         this.store.loadItems()
     }
 
-    handleInput = event => {
+    handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.store.handleNew(event.target.value)
     }
 
-    handleEnterKey = event => {
-        if (event.key === 'Enter' && this.store.addValue.trim()) {
+    handleEnterKey = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (event.key === 'Enter') {
             this.store.add()
         }
     }
 
-    handleClose = () => {
+    handleClose = (): void => {
         this.setState({
             showEdit: false,
             showDelete: false
         })
     }
 
-    handleEdit = event => {
+    handleEdit = (event: React.MouseEvent<HTMLButtonElement>): void => {
         this.store.setEditValue(event.target.id)
         this.setState({ showEdit: true })
     }
 
-    handleChange = event => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         if (event.key === 'Escape') {
             this.setState({ showEdit: false })
         }
@@ -50,27 +51,27 @@ export default @withStore class extends Component {
         this.store.change(event.target.value)
     }
 
-    editItem = () => {
+    editItem = (): void => {
         this.store.edit(this.store.currId)
         this.setState({ showEdit: false })
     }
 
-    handleDelete = event => {
+    handleDelete = (event: React.MouseEvent<HTMLButtonElement>): void => {
         this.store.currId = this.store.getId(event.target.id)
         this.setState({ showDelete: true })
     }
 
-    deleteItem = () => {
+    deleteItem = (): void => {
         this.store.delete(this.store.currId)
         this.setState({ showDelete: false })
         this.addInput.current.focus()
     }
 
-    handleSort = event => {
+    handleSort = (event: React.MouseEvent<HTMLTableHeaderCellElement>): void => {
         this.store.sort(event.target.innerText)
     }
 
-    handleDnd = newItems => {
+    handleDnd = (newItems: object[]): void => {
         this.store.dragAndDrop(newItems)
     }
 

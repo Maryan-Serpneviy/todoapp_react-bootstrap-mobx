@@ -1,7 +1,7 @@
 import { observable, computed, action } from 'mobx'
 
 export default class CoursesStore {
-    constructor(rootStore) {
+    constructor(rootStore: object) {
         this.rootStore = rootStore
         this.service = this.rootStore.service
         this.storage = this.rootStore.storage
@@ -9,27 +9,27 @@ export default class CoursesStore {
         this.sortReverse = this.rootStore.sortReverse
     }
 
-    @observable items = []
-    @observable editValue = ''
+    @observable items: object[] = []
+    @observable editValue: string = ''
 
-    cached = []
-    matched = []
-    currId = null
+    private cached: object[] = []
+    private matched: object[] = []
     addValue = ''
+    currId: number = null
 
-    editKey = 'course'
-    storageKey = 'courses'
+    private editKey = 'course'
+    private storageKey = 'courses'
     
-    isSorted = {
+    private isSorted = {
         course: false,
         students: false
     }
 
     @computed get getId() {
-        return (rawId) => Number(/\d+/.exec(rawId)[0])
+        return (rawId: string): number => Number(/\d+/.exec(rawId)[0])
     }
 
-    @computed get itemExist() {
+    @computed get itemExist(): boolean {
         return this.cached.some(el => {
             return el[this.editKey].toLowerCase() === this.addValue.toLowerCase()
         })
@@ -38,18 +38,15 @@ export default class CoursesStore {
     @action loadItems() {
         try {
             const serializedState = this.storage.getItem(this.storageKey)
-            if (serializedState === null) {
-                return undefined
-            }
             this.items = JSON.parse(serializedState)
-            this.cached = [...this.items] // for search results filter
+            this.cached = [...this.items] // for search filter
         } catch (err) {
             this.items = this.service.getCourses()
             this.cached = this.service.getCourses()
         }
     }
 
-    @action handleNew(inputVal) {
+    @action handleNew(inputVal: string): void {
         this.addValue = inputVal
         this.matched = this.cached.filter(el => {
             return el[this.editKey]
@@ -59,7 +56,7 @@ export default class CoursesStore {
         this.items = [...this.matched]
     }
 
-    @action add() {
+    @action add(): void {
         if (!this.itemExist && this.addValue.trim()) {
             this.cached.unshift({
                 id: Math.round(Math.random() * 10000),
@@ -72,29 +69,31 @@ export default class CoursesStore {
         }
     }
 
-    @action setEditValue(rawId) {
+    @action setEditValue(rawId: string): void {
         this.currId = this.getId(rawId)
         this.editValue = this.items.find(el => el.id === this.currId)[this.editKey]
     }
 
-    @action change(newVal) {
+    @action change(newVal: string): void {
         this.editValue = newVal
     }
 
-    @action edit(id) {
-        this.items.find(el => el.id === id)[this.editKey] = this.editValue
-        this.cached.find(el => el.id === id)[this.editKey] = this.editValue
-        this.setItems()
+    @action edit(id: number): void {
+        if (this.editValue.trim()) {
+            this.items.find(el => el.id === id)[this.editKey] = this.editValue
+            this.cached.find(el => el.id === id)[this.editKey] = this.editValue
+            this.setItems()
+        }
     }
 
-    @action delete(id) {
+    @action delete(id: number): void {
         this.items = this.cached.filter(el => el.id !== id)
         this.cached = [...this.items] // update cached data
         this.addValue = ''
         this.setItems()
     }
 
-    @action sort(title) {
+    @action sort(title: string): void {
         const prop = title.toLowerCase()
         
         !this.isSorted[prop] ?
@@ -104,7 +103,7 @@ export default class CoursesStore {
         this.isSorted[prop] = !this.isSorted[prop]
     }
 
-    @action dragAndDrop(newItems) {
+    @action dragAndDrop(newItems: object[]): void {
         this.items = newItems
         this.cached = newItems
         this.setItems()
