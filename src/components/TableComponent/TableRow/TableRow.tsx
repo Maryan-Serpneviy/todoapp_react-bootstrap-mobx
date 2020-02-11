@@ -1,25 +1,9 @@
 import React, { useRef } from 'react'
+import PropTypes, { InferProps } from 'prop-types'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { Button } from 'react-bootstrap'
 
-interface RowProps {
-   item: object
-   index: number
-   baseId?: string
-   first: string
-   second: string
-   handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
-   handleDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
-   moveItem: (dragIndex: number, hoverIndex: number) => void
-}
-
-interface DragItem {
-   id: any
-   text: string
-   index: number
-}
-
-const TableRow: React.FC<RowProps> = props => {
+const TableRow: React.FC<Props> = (props: InferProps<typeof TableRow.propTypes>) => {
    const {
       item,
       index,
@@ -83,6 +67,34 @@ const TableRow: React.FC<RowProps> = props => {
          </td>
       </tr>
    )
+}
+
+TableRow.propTypes = {
+   item: PropTypes.object.isRequired,
+   index: PropTypes.number.isRequired,
+   baseId: PropTypes.string,
+   first: PropTypes.string.isRequired,
+   second: PropTypes.string.isRequired,
+   handleEdit: PropTypes.func.isRequired,
+   handleDelete: PropTypes.func.isRequired,
+   moveItem: PropTypes.func.isRequired
+}
+
+interface Props {
+   item: object
+   index: number
+   baseId?: string
+   first: string
+   second: string
+   handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
+   handleDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
+   moveItem: (dragIndex: number, hoverIndex: number) => void
+}
+
+interface DragItem {
+   id: any
+   text: string
+   index: number
 }
 
 export default TableRow

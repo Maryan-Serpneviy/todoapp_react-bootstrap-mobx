@@ -1,18 +1,9 @@
 import React, { useCallback } from 'react'
+import PropTypes, { InferProps } from 'prop-types'
 import { Table } from 'react-bootstrap'
 import TableRow from './TableRow'
 
-interface TableProps {
-    items: object[]
-    handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
-    handleDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
-    handleSort?: (event: React.MouseEvent<HTMLTableHeaderCellElement>) => void
-    handleDnd: (newItems: object[]) => void
-    tableHeadings: string[]
-    baseId?: string
-}
-
-const TableComponent: React.FC<TableProps> = props => {
+const TableComponent: React.FC<Props> = (props: InferProps<typeof TableComponent.propTypes>) => {
     const {
         items,
         handleEdit,
@@ -64,6 +55,26 @@ const TableComponent: React.FC<TableProps> = props => {
             </tbody>
         </Table>
     )
+}
+
+TableComponent.propTypes = {
+    items: PropTypes.array.isRequired,
+    handleEdit: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    handleSort: PropTypes.func,
+    handleDnd: PropTypes.func,
+    tableHeadings: PropTypes.array.isRequired,
+    baseId: PropTypes.string
+}
+
+interface Props {
+    items: object[]
+    handleEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
+    handleDelete: (event: React.MouseEvent<HTMLButtonElement>) => void
+    handleSort?: (event: React.MouseEvent<HTMLTableHeaderCellElement>) => void
+    handleDnd: (newItems: object[]) => void
+    tableHeadings: string[]
+    baseId?: string
 }
 
 export default TableComponent
